@@ -20,14 +20,18 @@ require("./libs/chat.js").sockets(http);
 
 app.use(logger("dev"));
 
-//db connection
-const dbPath = process.env.DATABASE_URL || "mongodb://localhost:27017/chatIO"; 
-mongoose.connect(dbPath, { useNewUrlParser: true })
-    .then(() => console.log("Connection Successful"))
-    .catch(err => console.log(err));
-mongoose.connection.once("open", function() {
-  console.log("Database Connection Established Successfully.");
-});
+mongoose.connect(
+  "mongodb+srv://nouha:nouha123@cluster0.swnxc.mongodb.net/pharm-app",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  },
+  { useMongoClient: true }
+);
+mongoose.connection
+  .once("open", () => console.log("Connected to the database!"))
+  .on("error", (err) => console.log("Error", err));
+
 
 //http method override middleware
 app.use(
